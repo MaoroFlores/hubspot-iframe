@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- Load the HubSpot Forms JS API -->
+<script src="https://js-eu1.hsforms.net/forms/v2.js" defer></script>
+
+<!-- Target container where HubSpot will inject the form -->
+<div id="hubspot-form"></div>
+
+<script>
+  window.addEventListener('load', function () {
+    hbspt.forms.create({
+      region: "eu1",
+      portalId: "143673392",
+      formId: "5ce807e8-44f3-4fe2-a080-645784405b11",
+      target: "#hubspot-form",
+
+      onFormSubmitted: function(formElement) {
+          const getValue = (name) => formElement.querySelector(`[name="${name}"]`)?.value || "";
+          const params = new URLSearchParams();
+
+          ['firstname', 'lastname', 'email', 'phone', 'zip', 'address', 'city'].forEach(name => {
+            params.set(name, getValue(name));
+          });
+
+        window.location.href = redirectUrl.toString();
+      }
+    });
+  });
+</script>
+</body>
+</html>
