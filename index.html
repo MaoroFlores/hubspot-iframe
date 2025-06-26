@@ -1,55 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HubSpot Form Embed with Redirect</title>
 </head>
 <body>
-  <!-- Load the HubSpot Forms JS API -->
-<script src="https://js-eu1.hsforms.net/forms/v2.js" defer></script>
 
-<!-- Target container where HubSpot will inject the form -->
-<div id="hubspot-form"></div>
+  <!-- Container for the form -->
+  <div id="hubspot-form"></div>
 
-<script>
-  window.addEventListener('load', function () {
-    hbspt.forms.create({
-      region: "eu1",
-      portalId: "143673392",
-      formId: "5ce807e8-44f3-4fe2-a080-645784405b11",
-      target: "#hubspot-form",
+  <!-- Load HubSpot forms v2 API -->
+  <script src="https://js-eu1.hsforms.net/forms/v2.js" defer></script>
 
-      onFormSubmit: function(formElement) {
-        // Get field values from the form DOM element
-        const getValue = (name) => {
-          const input = formElement.querySelector(`[name="${name}"]`);
-          return input ? input.value : '';
-        };
+  <script>
+    window.addEventListener('load', function () {
+      hbspt.forms.create({
+        region: "eu1",
+        portalId: "143673392",
+        formId: "5ce807e8-44f3-4fe2-a080-645784405b11",
+        target: "#hubspot-form",
 
-        const voornaam   = getValue("firstname");
-        const achternaam = getValue("lastname");
-        const email      = getValue("email");
-        const telefoon   = getValue("phone");
-        const postcode   = getValue("zip");
-        const adres      = getValue("address");
-        const plaats     = getValue("city");
+        onFormSubmit: function(formElement) {
+          const getValue = (name) => formElement.querySelector(`[name="${name}"]`)?.value || "";
 
-        // Build your redirect URL with query params
-        const redirectUrl = new URL("http://127.0.0.1:7001/test");
-        redirectUrl.searchParams.set("voornaam", voornaam);
-        redirectUrl.searchParams.set("achternaam", achternaam);
-        redirectUrl.searchParams.set("email", email);
-        redirectUrl.searchParams.set("telefoon", telefoon);
-        redirectUrl.searchParams.set("postcode", postcode);
-        redirectUrl.searchParams.set("adres", adres);
-        redirectUrl.searchParams.set("plaats", plaats);
+          const voornaam   = getValue("firstname");
+          const achternaam = getValue("lastname");
+          const email      = getValue("email");
+          const telefoon   = getValue("phone");
+          const postcode   = getValue("zip");
+          const adres      = getValue("address");
+          const plaats     = getValue("city");
 
-        // Redirect after submission
-        window.location.href = redirectUrl.toString();
-      }
+          const redirectUrl = new URL("http://127.0.0.1:7001/test");
+          redirectUrl.searchParams.set("voornaam", voornaam);
+          redirectUrl.searchParams.set("achternaam", achternaam);
+          redirectUrl.searchParams.set("email", email);
+          redirectUrl.searchParams.set("telefoon", telefoon);
+          redirectUrl.searchParams.set("postcode", postcode);
+          redirectUrl.searchParams.set("adres", adres);
+          redirectUrl.searchParams.set("plaats", plaats);
+
+          window.location.href = redirectUrl.toString();
+        }
+      });
     });
-  });
-</script>
+  </script>
 </body>
 </html>
