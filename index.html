@@ -20,14 +20,32 @@
       formId: "5ce807e8-44f3-4fe2-a080-645784405b11",
       target: "#hubspot-form",
 
-      onFormSubmitted: function(formElement) {
-          const getValue = (name) => formElement.querySelector(`[name="${name}"]`)?.value || "";
-          const params = new URLSearchParams();
+      onFormSubmit: function(formElement) {
+        // Get field values from the form DOM element
+        const getValue = (name) => {
+          const input = formElement.querySelector(`[name="${name}"]`);
+          return input ? input.value : '';
+        };
 
-          ['firstname', 'lastname', 'email', 'phone', 'zip', 'address', 'city'].forEach(name => {
-            params.set(name, getValue(name));
-          });
+        const voornaam   = getValue("firstname");
+        const achternaam = getValue("lastname");
+        const email      = getValue("email");
+        const telefoon   = getValue("phone");
+        const postcode   = getValue("zip");
+        const adres      = getValue("address");
+        const plaats     = getValue("city");
 
+        // Build your redirect URL with query params
+        const redirectUrl = new URL("http://127.0.0.1:7001/test");
+        redirectUrl.searchParams.set("voornaam", voornaam);
+        redirectUrl.searchParams.set("achternaam", achternaam);
+        redirectUrl.searchParams.set("email", email);
+        redirectUrl.searchParams.set("telefoon", telefoon);
+        redirectUrl.searchParams.set("postcode", postcode);
+        redirectUrl.searchParams.set("adres", adres);
+        redirectUrl.searchParams.set("plaats", plaats);
+
+        // Redirect after submission
         window.location.href = redirectUrl.toString();
       }
     });
